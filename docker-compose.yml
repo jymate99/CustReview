@@ -5,22 +5,16 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    ports:
-      - "80:80"
+    networks:
+      - app-network
     depends_on:
       backend:
         condition: service_healthy
-    networks:
-      - app-network
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    environment:
-      - CORS_ORIGINS=http://localhost,http://localhost:80
     networks:
       - app-network
     healthcheck:
@@ -32,4 +26,5 @@ services:
 
 networks:
   app-network:
+    name: sentiment-analysis-network
     driver: bridge
